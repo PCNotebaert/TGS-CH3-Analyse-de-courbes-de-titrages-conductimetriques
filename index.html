@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercices de Titrage Conductimétrique</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #1a365d;
+            --secondary: #2d5986;
+            --accent: #d97706;
+            --success: #059669;
+            --error: #dc2626;
+            --bg-light: #f8fafc;
+            --bg-white: #ffffff;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+        
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(26, 54, 93, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.03) 10px,
+                rgba(255,255,255,0.03) 20px
+            );
+            pointer-events: none;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .exercise-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .exercise-btn {
+            background: white;
+            border: 3px solid var(--border);
+            padding: 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .exercise-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(217, 119, 6, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .exercise-btn:hover::before {
+            left: 100%;
+        }
+        
+        .exercise-btn:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(217, 119, 6, 0.2);
+        }
+        
+        .exercise-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+        
+        .exercise-content {
+            display: none;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .exercise-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .exercise-header {
+            border-left: 5px solid var(--accent);
+            padding-left: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .exercise-header h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .exercise-description {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+        
+        .titrage-info {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 2px solid var(--border);
+        }
+        
+        .titrage-info h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        
+        .info-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .info-item strong {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+        
+        .graph-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .graph-container h3 {
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+        }
+        
+        canvas {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+        
+        .table-container {
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+        
+        .table-container h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:hover {
+            background: var(--bg-light);
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
+        }
+        
+        input.correct {
+            background: #d1fae5;
+            border-color: var(--success);
+        }
+        
+        input.incorrect {
+            background: #fee2e2;
+            border-color: var(--error);
+        }
+        
+        .question-section {
+            background: var(--bg-light);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 2px solid var(--border);
+        }
+        
+        .question-section h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        button span {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .btn-check {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .btn-check:hover {
+            background: #b45309;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(217, 119, 6, 0.3);
+        }
+        
+        .btn-show {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .btn-show:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(45, 89, 134, 0.3);
+        }
+        
+        .btn-reset {
+            background: var(--text-light);
+            color: white;
+        }
+        
+        .btn-reset:hover {
+            background: #475569;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(100, 116, 139, 0.3);
+        }
+        
+        .correction {
+            display: none;
+            background: #f0fdf4;
+            border: 2px solid var(--success);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+            animation: slideDown 0.4s ease;
+        }
+        
+        .correction.show {
+            display: block;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+                padding: 0 2rem;
+            }
+            to {
+                opacity: 1;
+                max-height: 1000px;
+                padding: 2rem;
+            }
+        }
+        
+        .correction h4 {
+            color: var(--success);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+        
+        .correction-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .score {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            box-shadow: 0 8px 25px rgba(26, 54, 93, 0.3);
+        }
+        
+        .formula {
+            font-family: 'JetBrains Mono', monospace;
+            background: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .exercise-selector {
+                grid-template-columns: 1fr;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚗️ Titrages Conductimétriques</h1>
+            <p class="subtitle">Justifier l'allure des courbes de titrage</p>
+        </header>
+        
+        <div class="exercise-selector">
+            <button class="exercise-btn active" onclick="showExercise(1)">
+                <span>Exercice 1<br>Effluent basique</span>
+            </button>
+            <button class="exercise-btn" onclick="showExercise(2)">
+                <span>Exercice 2<br>Eau de Javel</span>
+            </button>
+            <button class="exercise-btn" onclick="showExercise(3)">
+                <span>Exercice 3<br>Soude industrielle</span>
+            </button>
+            <button class="exercise-btn" onclick="showExercise(4)">
+                <span>Exercice 4<br>Détartrant</span>
+            </button>
+            <button class="exercise-btn" onclick="showExercise(5)">
+                <span>Exercice 5<br>Ammoniaque</span>
+            </button>
+        </div>
+        
+        <!-- EXERCICE 1 -->
+        <div id="exercise1" class="exercise-content active">
+            <div class="exercise-header">
+                <h2>Exercice 1 : Titrage d'un effluent basique</h2>
+            </div>
+            
+            <div class="exercise-description">
+                Dans les laiteries industrielles, les cuves sont nettoyées à l'aide de solutions d'hydroxyde de sodium concentrées. Les eaux de rinçage (effluents) doivent être titrées avant rejet.
+            </div>
+            
+            <div class="titrage-info">
+                <h3>Informations sur le titrage</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Solution titrée :</strong>
+                        Effluent contenant des ions hydroxyde <span class="formula">HO⁻</span> et sodium <span class="formula">Na⁺</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Solution titrante :</strong>
+                        Acide chlorhydrique <span class="formula">HCl</span> de concentration connue
+                    </div>
+                    <div class="info-item">
+                        <strong>Équation de la réaction :</strong>
+                        <span class="formula">H₃O⁺ + HO⁻ → 2 H₂O</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Conductivités molaires ioniques (25°C) :</strong>
+                        λ(Na⁺) = 5,0 mS·m²·mol⁻¹<br>
+                        λ(HO⁻) = 19,9 mS·m²·mol⁻¹<br>
+                        λ(H₃O⁺) = 35,0 mS·m²·mol⁻¹<br>
+                        λ(Cl⁻) = 7,6 mS·m²·mol⁻¹
+                    </div>
+                </div>
+            </div>
+            
+            <div class="graph-container">
+                <h3>Courbe de titrage conductimétrique</h3>
+                <canvas id="graph1" width="600" height="400"></canvas>
+            </div>
+            
+            <div class="table-container">
+                <h3>Tableau d'évolution à compléter</h3>
+                <p style="margin-bottom: 1rem; color: var(--text-light);">Complétez le tableau en indiquant l'évolution des concentrations des ions en solution.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Phase du titrage</th>
+                            <th>Ions présents</th>
+                            <th>Évolution de [HO⁻]</th>
+                            <th>Évolution de [H₃O⁺]</th>
+                            <th>Évolution de [Na⁺]</th>
+                            <th>Évolution de [Cl⁻]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Avant l'équivalence</strong></td>
+                            <td><input type="text" id="ex1_ions_avant" placeholder="Ex: Na⁺, HO⁻, ..."></td>
+                            <td><input type="text" id="ex1_ho_avant" placeholder="↗, ↘, ou ="></td>
+                            <td><input type="text" id="ex1_h3o_avant" placeholder="↗, ↘, ou ="></td>
+                            <td><input type="text" id="ex1_na_avant" placeholder="↗, ↘, ou ="></td>
+                            <td><input type="text" id="ex1_cl_avant" placeholder="↗, ↘, ou ="></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Après l'équivalence</strong></td>
+                            <td><input type="text" id="ex1_ions_apres" placeholder="Ex: Na⁺, H₃O⁺, ..."></td>
+                            <td><input type="text" id="ex1_ho_apres" placeholder="↗, ↘, ou ="></td>
+                            <td><input type="text" id="ex1_h3o_apres" placeholder="↗, ↘, ou ="></td>
+                            <td><input type="text" id="ex1_na_apres" placeholder="↗, ↘, ou ="></td>
+                            <td><input type="text" id="ex1_cl_apres" placeholder="↗, ↘, ou ="></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="question-section">
+                <h3>Question : Justifier l'allure de la courbe de titrage</h3>
+                <p style="margin-bottom: 1rem; color: var(--text-light);">
+                    Expliquez pourquoi la courbe présente deux pentes différentes (avant et après l'équivalence) en vous appuyant sur les conductivités molaires ioniques.
+                </p>
+                <textarea id="ex1_justification" placeholder="Rédigez votre justification ici..."></textarea>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn-check" onclick="checkExercise(1)"><span>✓ Vérifier mes réponses</span></button>
+                <button class="btn-show" onclick="showCorrection(1)"><span>👁 Voir la correction</span></button>
+                <button class="btn-reset" onclick="resetExercise(1)"><span>↻ Recommencer</span></button>
+            </div>
+            
+            <div id="score1" class="score" style="display: none;"></div>
+            
+            <div id="correction1" class="correction">
+                <h4>📚 Correction détaillée</h4>
+                <div class="correction-content">
+                    <p><strong>Tableau d'évolution :</strong></p>
+                    <ul style="margin: 1rem 0; line-height: 2;">
+                        <li><strong>Avant l'équivalence :</strong>
+                            <ul style="margin-left: 2rem;">
+                                <li>Ions présents : Na⁺, HO⁻, Cl⁻</li>
+                                <li>[HO⁻] : ↘ (diminue car consommé par H₃O⁺)</li>
+                                <li>[H₃O⁺] : ≈ 0 (consommé instantanément)</li>
+                                <li>[Na⁺] : = (spectateur, concentration constante)</li>
+                                <li>[Cl⁻] : ↗ (augmente par ajout de HCl)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Après l'équivalence :</strong>
+                            <ul style="margin-left: 2rem;">
+                                <li>Ions présents : Na⁺, H₃O⁺, Cl⁻</li>
+                                <li>[HO⁻] : ≈ 0 (totalement consommé)</li>
+                                <li>[H₃O⁺] : ↗ (en excès, s'accumule)</li>
+                                <li>[Na⁺] : = (spectateur, concentration constante)</li>
+                                <li>[Cl⁻] : ↗ (continue d'augmenter)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    
+                    <p><strong>Justification de l'allure de la courbe :</strong></p>
+                    <p style="margin-top: 1rem;">
+                        <strong>Avant l'équivalence :</strong> La conductivité diminue (pente négative) car les ions HO⁻ très conducteurs 
+                        (λ = 19,9 mS·m²·mol⁻¹) sont consommés et remplacés par des ions Cl⁻ beaucoup moins conducteurs (λ = 7,6 mS·m²·mol⁻¹). 
+                        Tout se passe comme si un ion très conducteur est remplacé par un ion moins conducteur.
+                    </p>
+                    <p style="margin-top: 1rem;">
+                        <strong>Après l'équivalence :</strong> La conductivité augmente (pente positive) car les ions H₃O⁺ extrêmement conducteurs 
+                        (λ = 35,0 mS·m²·mol⁻¹) et Cl⁻ s'accumulent en solution sans être consommés. Les ions H₃O⁺ sont les plus conducteurs 
+                        de tous les ions, ce qui explique l'augmentation rapide de la conductivité.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- EXERCICE 2 -->
+        <div id="exercise2" class="exercise-content">
+            <div class="exercise-header">
+                <h2>Exercice 2 : Titrage de l'eau de Javel</h2>
+            </div>
+            
+            <div class="exercise-description">
+                L'eau de Javel contient des ions hypochlorite ClO⁻ et des ions sodium Na⁺. On titre cette solution par de l'acide chlorhydrique pour déterminer sa concentration.
+            </div>
+            
+            <div class="titrage-info">
+                <h3>Informations sur le titrage</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Solution titrée :</strong>
+                        Eau de Javel diluée contenant <span class="formula">ClO⁻</span> et <span class="formula">Na⁺</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Solution titrante :</strong>
+                        Acide chlorhydrique <span class="formula">HCl</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Équation de la réaction :</strong>
+                        <span class="formula">ClO⁻ + H₃O⁺ → HClO + H₂O</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Conductivités molaires ioniques (25°C) :</strong>
+                        λ(Na⁺) = 5,0 mS·m²·mol⁻¹<br>
+                        λ(ClO⁻) = 6,4 mS·m²·mol⁻¹<br>
+                        λ(H₃O⁺) = 35,0 mS·m²·mol⁻¹<br>
+                        λ(Cl⁻) = 7,6 mS·m²·mol⁻¹
+                    </div>
+                </div>
+            </div>
+            
+            <div class="graph-container">
+                <h3>Courbe de titrage conductimétrique</h3>
+                <canvas id="graph2" width="600" height="400"></canvas>
+            </div>
+            
+            <div class="table-container">
+                <h3>Tableau d'évolution à compléter</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Phase du titrage</th>
+                            <th>Ions présents</th>
+                            <th>Évolution de [ClO⁻]</th>
+                            <th>Évolution de [H₃O⁺]</th>
+                            <th>Évolution de [Na⁺]</th>
+                            <th>Évolution de [Cl⁻]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Avant l'équivalence</strong></td>
+                            <td><input type="text" id="ex2_ions_avant"></td>
+                            <td><input type="text" id="ex2_clo_avant"></td>
+                            <td><input type="text" id="ex2_h3o_avant"></td>
+                            <td><input type="text" id="ex2_na_avant"></td>
+                            <td><input type="text" id="ex2_cl_avant"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Après l'équivalence</strong></td>
+                            <td><input type="text" id="ex2_ions_apres"></td>
+                            <td><input type="text" id="ex2_clo_apres"></td>
+                            <td><input type="text" id="ex2_h3o_apres"></td>
+                            <td><input type="text" id="ex2_na_apres"></td>
+                            <td><input type="text" id="ex2_cl_apres"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="question-section">
+                <h3>Question : Justifier l'allure de la courbe de titrage</h3>
+                <p style="margin-bottom: 1rem; color: var(--text-light);">
+                    Expliquez pourquoi la courbe présente deux pentes différentes en vous appuyant sur les conductivités molaires ioniques.
+                </p>
+                <textarea id="ex2_justification"></textarea>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn-check" onclick="checkExercise(2)"><span>✓ Vérifier mes réponses</span></button>
+                <button class="btn-show" onclick="showCorrection(2)"><span>👁 Voir la correction</span></button>
+                <button class="btn-reset" onclick="resetExercise(2)"><span>↻ Recommencer</span></button>
+            </div>
+            
+            <div id="score2" class="score" style="display: none;"></div>
+            
+            <div id="correction2" class="correction">
+                <h4>📚 Correction détaillée</h4>
+                <div class="correction-content">
+                    <p><strong>Tableau d'évolution :</strong></p>
+                    <ul style="margin: 1rem 0; line-height: 2;">
+                        <li><strong>Avant l'équivalence :</strong>
+                            <ul style="margin-left: 2rem;">
+                                <li>Ions présents : Na⁺, ClO⁻, Cl⁻</li>
+                                <li>[ClO⁻] : ↘ (consommé par la réaction)</li>
+                                <li>[H₃O⁺] : ≈ 0 (consommé instantanément)</li>
+                                <li>[Na⁺] : = (spectateur, concentration constante)</li>
+                                <li>[Cl⁻] : ↗ (augmente par ajout de HCl)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Après l'équivalence :</strong>
+                            <ul style="margin-left: 2rem;">
+                                <li>Ions présents : Na⁺, H₃O⁺, Cl⁻</li>
+                                <li>[ClO⁻] : ≈ 0 (totalement consommé)</li>
+                                <li>[H₃O⁺] : ↗ (en excès)</li>
+                                <li>[Na⁺] : = (spectateur, concentration constante)</li>
+                                <li>[Cl⁻] : ↗ (continue d'augmenter)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    
+                    <p><strong>Justification de l'allure de la courbe :</strong></p>
+                    <p style="margin-top: 1rem;">
+                        <strong>Avant l'équivalence :</strong> La conductivité augmente très légèrement (pente positive faible) car les ions ClO⁻ 
+                        (λ = 6,4 mS·m²·mol⁻¹) sont consommés et remplacés par des ions Cl⁻ légèrement plus conducteurs (λ = 7,6 mS·m²·mol⁻¹). 
+                        L'augmentation est modérée car les deux ions ont des conductivités proches (rapport de 1,2).
+                    </p>
+                    <p style="margin-top: 1rem;">
+                        <strong>Après l'équivalence :</strong> La conductivité augmente fortement (pente positive élevée) car les ions H₃O⁺ 
+                        extrêmement conducteurs (λ = 35,0 mS·m²·mol⁻¹) s'accumulent en solution. La pente est bien plus importante 
+                        qu'avant l'équivalence car H₃O⁺ est environ 5 fois plus conducteur que Cl⁻.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- EXERCICE 3 -->
+        <div id="exercise3" class="exercise-content">
+            <div class="exercise-header">
+                <h2>Exercice 3 : Titrage d'une soude industrielle</h2>
+            </div>
+            
+            <div class="exercise-description">
+                Une solution de soude (hydroxyde de sodium) est utilisée dans l'industrie chimique. On dose cette solution par de l'acide nitrique pour contrôler sa concentration.
+            </div>
+            
+            <div class="titrage-info">
+                <h3>Informations sur le titrage</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Solution titrée :</strong>
+                        Soude contenant <span class="formula">Na⁺</span> et <span class="formula">HO⁻</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Solution titrante :</strong>
+                        Acide nitrique <span class="formula">HNO₃</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Équation de la réaction :</strong>
+                        <span class="formula">H₃O⁺ + HO⁻ → 2 H₂O</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Conductivités molaires ioniques (25°C) :</strong>
+                        λ(Na⁺) = 5,0 mS·m²·mol⁻¹<br>
+                        λ(HO⁻) = 19,9 mS·m²·mol⁻¹<br>
+                        λ(H₃O⁺) = 35,0 mS·m²·mol⁻¹<br>
+                        λ(NO₃⁻) = 7,1 mS·m²·mol⁻¹
+                    </div>
+                </div>
+            </div>
+            
+            <div class="graph-container">
+                <h3>Courbe de titrage conductimétrique</h3>
+                <canvas id="graph3" width="600" height="400"></canvas>
+            </div>
+            
+            <div class="table-container">
+                <h3>Tableau d'évolution à compléter</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Phase du titrage</th>
+                            <th>Ions présents</th>
+                            <th>Évolution de [HO⁻]</th>
+                            <th>Évolution de [H₃O⁺]</th>
+                            <th>Évolution de [Na⁺]</th>
+                            <th>Évolution de [NO₃⁻]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Avant l'équivalence</strong></td>
+                            <td><input type="text" id="ex3_ions_avant"></td>
+                            <td><input type="text" id="ex3_ho_avant"></td>
+                            <td><input type="text" id="ex3_h3o_avant"></td>
+                            <td><input type="text" id="ex3_na_avant"></td>
+                            <td><input type="text" id="ex3_no3_avant"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Après l'équivalence</strong></td>
+                            <td><input type="text" id="ex3_ions_apres"></td>
+                            <td><input type="text" id="ex3_ho_apres"></td>
+                            <td><input type="text" id="ex3_h3o_apres"></td>
+                            <td><input type="text" id="ex3_na_apres"></td>
+                            <td><input type="text" id="ex3_no3_apres"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="question-section">
+                <h3>Question : Justifier l'allure de la courbe de titrage</h3>
+                <textarea id="ex3_justification"></textarea>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn-check" onclick="checkExercise(3)"><span>✓ Vérifier mes réponses</span></button>
+                <button class="btn-show" onclick="showCorrection(3)"><span>👁 Voir la correction</span></button>
+                <button class="btn-reset" onclick="resetExercise(3)"><span>↻ Recommencer</span></button>
+            </div>
+            
+            <div id="score3" class="score" style="display: none;"></div>
+            
+            <div id="correction3" class="correction">
+                <h4>📚 Correction détaillée</h4>
+                <div class="correction-content">
+                    <p><strong>Tableau d'évolution :</strong></p>
+                    <ul style="margin: 1rem 0; line-height: 2;">
+                        <li><strong>Avant l'équivalence :</strong>
+                            <ul style="margin-left: 2rem;">
+                                <li>Ions présents : Na⁺, HO⁻, NO₃⁻</li>
+                                <li>[HO⁻] : ↘ (consommé)</li>
+                                <li>[H₃O⁺] : ≈ 0 (consommé instantanément)</li>
+                                <li>[Na⁺] : = (spectateur, concentration constante)</li>
+                                <li>[NO₃⁻] : ↗ (augmente par ajout de HNO₃)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Après l'équivalence :</strong>
+                            <ul style="margin-left: 2rem;">
+                                <li>Ions présents : Na⁺, H₃O⁺, NO₃⁻</li>
+                                <li>[HO⁻] : ≈ 0 (totalement consommé)</li>
+                                <li>[H₃O⁺] : ↗ (en excès)</li>
+                                <li>[Na⁺] : = (spectateur, concentration constante)</li>
+                                <li>[NO₃⁻] : ↗ (continue d'augmenter)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    
+                    <p><strong>Justification de l'allure de la courbe :</strong></p>
+                    <p style="margin-top: 1rem;">
+                        <strong>Avant l'équivalence :</strong> La conductivité diminue (pente négative) car les ions HO⁻ très conducteurs 
+                        (λ = 19,9 mS·m²·mol⁻¹) sont consommés et remplacés par des ions NO₃⁻ beaucoup moins conducteurs (λ = 7,1 mS·m²·mol⁻¹). 
+                        Tout se passe comme si un ion très conducteur est remplacé par un ion environ 3 fois moins conducteur, expliquant la diminution significative.
+                    </p>
+                    <p style="margin-top: 1rem;">
+                        <strong>Après l'équivalence :</strong> La conductivité augmente fortement (pente positive élevée) car les ions H₃O⁺ 
+                        extrêmement conducteurs (λ = 35,0 mS·m²·mol⁻¹) s'accumulent en solution. Ces ions sont les plus conducteurs, 
+                        environ 5 fois plus que NO₃⁻, ce qui explique l'augmentation rapide de la conductivité.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- EXERCICE 4 -->
+        <div id="exercise4" class="exercise-content">
+            <div class="exercise-header">
+                <h2>Exercice 4 : Titrage d'un détartrant acide</h2>
+            </div>
+            
+            <div class="exercise-description">
+                Un détartrant contient de l'acide chlorhydrique. On titre cette solution par une solution d'hydroxyde de potassium pour déterminer sa concentration.
+            </div>
+            
+            <div class="titrage-info">
+                <h3>Informations sur le titrage</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Solution titrée :</strong>
+                        Détartrant dilué contenant <span class="formula">H₃O⁺</span> et <span class="formula">Cl⁻</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Solution titrante :</strong>
+                        Hydroxyde de potassium <span class="formula">KOH</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Équation de la réaction :</strong>
+                        <span class="formula">H₃O⁺ + HO⁻ → 2 H₂O</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Conductivités molaires ioniques (25°C) :</strong>
+                        λ(K⁺) = 7,4 mS·m²·mol⁻¹<br>
+                        λ(HO⁻) = 19,9 mS·m²·mol⁻¹<br>
+                        λ(H₃O⁺) = 35,0 mS·m²·mol⁻¹<br>
+                        λ(Cl⁻) = 7,6 mS·m²·mol⁻¹
+                    </div>
+                </div>
+            </div>
+            
+            <div class="graph-container">
+                <h3>Courbe de titrage conductimétrique</h3>
+                <canvas id="graph4" width="600" height="400"></canvas>
+            </div>
+            
+            <div class="table-container">
+                <h3>Tableau d'évolution à compléter</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Phase du titrage</th>
+                            <th>Ions présents</th>
+                            <th>Évolution de [H₃O⁺]</th>
+                            <th>Évolution de [HO⁻]</th>
+                            <th>Évolution de [Cl⁻]</th>
+                            <th>Évolution de [K⁺]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Avant l'équivalence</strong></td>
+                            <td><input type="text" id="ex4_ions_avant"></td>
+                            <td><input type="text" id="ex4_h3o_avant"></td>
+                            <td><input type="text" id="ex4_ho_avant"></td>
+                            <td><input type="text" id="ex4_cl_avant"></td>
+                            <td><input type="text" id="ex4_k_avant"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Après l'équivalence</strong></td>
+                            <td><input type="text" id="ex4_ions_apres"></td>
+                            <td><input type="text" id="ex4_h3o_apres"></td>
+                            <td><input type="text" id="ex4_ho_apres"></td>
+                            <td><input type="text" id="ex4_cl_apres"></td>
+                            <td><input type="text" id="ex4_k_apres"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="question-section">
+                <h3>Question : Justifier l'allure de la courbe de titrage</h3>
+                <textarea id="ex4_justification"></textarea>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn-check" onclick="checkExercise(4)"><span>✓ Vérifier mes réponses</span></button>
+                <button class="btn-show" onclick="showCorrection(4)"><span>👁 Voir la correction</span></button>
+                <button class="btn-reset" onclick="resetExercise(4)"><span>↻ Recommencer</span></button>
+            </div>
+            
+            <div id="score4" class="score" style="display: none;"></div>
+            
+            <div id="correction4" class="correction">
+                <h4>📚 Correction détaillée</h4>
+                <div class="correction-content">
+                    <p><strong>Tableau d'évolution :</strong></p>
+                    <ul style="margin: 1rem 0; line-height: 2;">
+                        <li><strong>Avant l'équivalence :</strong>
+                            <ul style="margin-left: 2rem;">
+                                <li>Ions présents : H₃O⁺, Cl⁻, K⁺</li>
+                                <li>[H₃O⁺] : ↘ (consommé par HO⁻)</li>
+                                <li>[HO⁻] : ≈ 0 (consommé instantanément)</li>
+                                <li>[Cl⁻] : = (spectateur, concentration constante)</li>
+                                <li>[K⁺] : ↗ (augmente par ajout de KOH)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Après l'équivalence :</strong>
+                            <ul style="margin-left: 2rem;">
+                                <li>Ions présents : HO⁻, Cl⁻, K⁺</li>
+                                <li>[H₃O⁺] : ≈ 0 (totalement consommé)</li>
+                                <li>[HO⁻] : ↗ (en excès)</li>
+                                <li>[Cl⁻] : = (spectateur, concentration constante)</li>
+                                <li>[K⁺] : ↗ (continue d'augmenter)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    
+                    <p><strong>Justification de l'allure de la courbe :</strong></p>
+                    <p style="margin-top: 1rem;">
+                        <strong>Avant l'équivalence :</strong> La conductivité diminue (pente négative) car les ions H₃O⁺ extrêmement conducteurs 
+                        (λ = 35,0 mS·m²·mol⁻¹) sont consommés et remplacés par des ions K⁺ beaucoup moins conducteurs (λ = 7,4 mS·m²·mol⁻¹). 
+                        Tout se passe comme si un ion très conducteur est remplacé par un ion environ 5 fois moins conducteur, expliquant la forte diminution.
+                    </p>
+                    <p style="margin-top: 1rem;">
+                        <strong>Après l'équivalence :</strong> La conductivité augmente (pente positive) car les ions HO⁻ très conducteurs 
+                        (λ = 19,9 mS·m²·mol⁻¹) et K⁺ s'accumulent en solution. Les ions HO⁻ sont le deuxième ion le plus conducteur 
+                        après H₃O⁺, ce qui explique l'augmentation notable de la conductivité.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- EXERCICE 5 -->
+        <div id="exercise5" class="exercise-content">
+            <div class="exercise-header">
+                <h2>Exercice 5 : Titrage d'une solution d'ammoniaque</h2>
+            </div>
+            
+            <div class="exercise-description">
+                Une solution d'ammoniaque (contenant des ions ammonium NH₄⁺) est titrée par une solution d'hydroxyde de sodium pour déterminer sa concentration.
+            </div>
+            
+            <div class="titrage-info">
+                <h3>Informations sur le titrage</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Solution titrée :</strong>
+                        Solution contenant <span class="formula">NH₄⁺</span> et <span class="formula">Cl⁻</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Solution titrante :</strong>
+                        Hydroxyde de sodium <span class="formula">NaOH</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Équation de la réaction :</strong>
+                        <span class="formula">NH₄⁺ + HO⁻ → NH₃ + H₂O</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Conductivités molaires ioniques (25°C) :</strong>
+                        λ(Na⁺) = 5,0 mS·m²·mol⁻¹<br>
+                        λ(HO⁻) = 19,9 mS·m²·mol⁻¹<br>
+                        λ(NH₄⁺) = 7,3 mS·m²·mol⁻¹<br>
+                        λ(Cl⁻) = 7,6 mS·m²·mol⁻¹
+                    </div>
+                </div>
+            </div>
+            
+            <div class="graph-container">
+                <h3>Courbe de titrage conductimétrique</h3>
+                <canvas id="graph5" width="600" height="400"></canvas>
+            </div>
+            
+            <div class="table-container">
+                <h3>Tableau d'évolution à compléter</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Phase du titrage</th>
+                            <th>Ions présents</th>
+                            <th>Évolution de [NH₄⁺]</th>
+                            <th>Évolution de [HO⁻]</th>
+                            <th>Évolution de [Cl⁻]</th>
+                            <th>Évolution de [Na⁺]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Avant l'équivalence</strong></td>
+                            <td><input type="text" id="ex5_ions_avant"></td>
+                            <td><input type="text" id="ex5_nh4_avant"></td>
+                            <td><input type="text" id="ex5_ho_avant"></td>
+                            <td><input type="text" id="ex5_cl_avant"></td>
+                            <td><input type="text" id="ex5_na_avant"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Après l'équivalence</strong></td>
+                            <td><input type="text" id="ex5_ions_apres"></td>
+                            <td><input type="text" id="ex5_nh4_apres"></td>
+                            <td><input type="text" id="ex5_ho_apres"></td>
+                            <td><input type="text" id="ex5_cl_apres"></td>
+                            <td><input type="text" id="ex5_na_apres"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="question-section">
+                <h3>Question : Justifier l'allure de la courbe de titrage</h3>
+                <textarea id="ex5_justification"></textarea>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn-check" onclick="checkExercise(5)"><span>✓ Vérifier mes réponses</span></button>
+                <button class="btn-show" onclick="showCorrection(5)"><span>👁 Voir la correction</span></button>
+                <button class="btn-reset" onclick="resetExercise(5)"><span>↻ Recommencer</span></button>
+            </div>
+            
+            <div id="score5" class="score" style="display: none;"></div>
+            
+            <div id="correction5" class="correction">
+                <h4>📚 Correction détaillée</h4>
+                <div class="correction-content">
+                    <p><strong>Tableau d'évolution :</strong></p>
+                    <ul style="margin: 1rem 0; line-height: 2;">
+                        <li><strong>Avant l'équivalence :</strong>
+                            <ul style="margin-left: 2rem;">
+                                <li>Ions présents : NH₄⁺, Cl⁻, Na⁺</li>
+                                <li>[NH₄⁺] : ↘ (consommé par HO⁻)</li>
+                                <li>[HO⁻] : ≈ 0 (consommé instantanément)</li>
+                                <li>[Cl⁻] : = (spectateur, concentration constante)</li>
+                                <li>[Na⁺] : ↗ (augmente par ajout de NaOH)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Après l'équivalence :</strong>
+                            <ul style="margin-left: 2rem;">
+                                <li>Ions présents : HO⁻, Cl⁻, Na⁺</li>
+                                <li>[NH₄⁺] : ≈ 0 (totalement consommé)</li>
+                                <li>[HO⁻] : ↗ (en excès)</li>
+                                <li>[Cl⁻] : = (spectateur, concentration constante)</li>
+                                <li>[Na⁺] : ↗ (continue d'augmenter)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    
+                    <p><strong>Justification de l'allure de la courbe :</strong></p>
+                    <p style="margin-top: 1rem;">
+                        <strong>Avant l'équivalence :</strong> La conductivité diminue légèrement (pente négative faible) car les ions NH₄⁺ 
+                        (λ = 7,3 mS·m²·mol⁻¹) sont consommés et remplacés par des ions Na⁺ moins conducteurs (λ = 5,0 mS·m²·mol⁻¹). 
+                        La différence de conductivité est relativement faible (rapport de 1,5), ce qui explique que la pente soit peu marquée.
+                    </p>
+                    <p style="margin-top: 1rem;">
+                        <strong>Après l'équivalence :</strong> La conductivité augmente fortement (pente positive élevée) car les ions HO⁻ 
+                        très conducteurs (λ = 19,9 mS·m²·mol⁻¹) s'accumulent en solution. Les ions HO⁻ sont environ 4 fois plus conducteurs 
+                        que les ions Na⁺, ce qui explique l'augmentation rapide de la conductivité après l'équivalence.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Configuration des exercices
+        const exercises = {
+            1: {
+                graph: {
+                    title: "σ (mS/cm)",
+                    xLabel: "Volume HCl (mL)",
+                    yLabel: "Conductivité (mS/cm)",
+                    eq: 15,
+                    V0: 50, // Volume initial en mL
+                    // Conductivités molaires (mS.m².mol⁻¹)
+                    lambda_Na: 5.0,
+                    lambda_HO: 19.9,
+                    lambda_H3O: 35.0,
+                    lambda_Cl: 7.6,
+                    C_titrant: 0.1, // Concentration solution titrante (mol/L)
+                    // Avant équivalence: HO- disparaît, Cl- apparaît, Na+ constant
+                    calcBefore: function(V, V0, Veq) {
+                        const n_HO_initial = this.C_titrant * Veq / 1000; // en mol
+                        const n_HO = n_HO_initial - this.C_titrant * V / 1000;
+                        const n_Cl = this.C_titrant * V / 1000;
+                        const n_Na = n_HO_initial;
+                        const V_total = (V0 + V) / 1000; // en L
+                        
+                        const sigma = (this.lambda_HO * n_HO + this.lambda_Cl * n_Cl + this.lambda_Na * n_Na) / V_total;
+                        return sigma;
+                    },
+                    // Après équivalence: H3O+ et Cl- augmentent, Na+ constant
+                    calcAfter: function(V, V0, Veq) {
+                        const n_HO_initial = this.C_titrant * Veq / 1000;
+                        const n_H3O = this.C_titrant * (V - Veq) / 1000;
+                        const n_Cl = this.C_titrant * V / 1000;
+                        const n_Na = n_HO_initial;
+                        const V_total = (V0 + V) / 1000;
+                        
+                        const sigma = (this.lambda_H3O * n_H3O + this.lambda_Cl * n_Cl + this.lambda_Na * n_Na) / V_total;
+                        return sigma;
+                    }
+                },
+                answers: {
+                    ions_avant: ["na+", "ho-", "cl-", "na", "ho", "cl"],
+                    ho_avant: ["↘", "diminue", "baisse"],
+                    h3o_avant: ["≈0", "0", "≈ 0"],
+                    na_avant: ["=", "constante", "constant"],
+                    cl_avant: ["↗", "augmente", "monte"],
+                    ions_apres: ["na+", "h3o+", "cl-", "na", "h3o", "cl"],
+                    ho_apres: ["≈0", "0", "≈ 0"],
+                    h3o_apres: ["↗", "augmente", "monte"],
+                    na_apres: ["=", "constante", "constant"],
+                    cl_apres: ["↗", "augmente", "monte"]
+                }
+            },
+            2: {
+                graph: {
+                    title: "σ (mS/cm)",
+                    xLabel: "Volume HCl (mL)",
+                    yLabel: "Conductivité (mS/cm)",
+                    eq: 12,
+                    V0: 50,
+                    lambda_Na: 5.0,
+                    lambda_ClO: 6.4,
+                    lambda_H3O: 35.0,
+                    lambda_Cl: 7.6,
+                    C_titrant: 0.1,
+                    // Avant équivalence: ClO- disparaît, Cl- apparaît, Na+ constant
+                    calcBefore: function(V, V0, Veq) {
+                        const n_ClO_initial = this.C_titrant * Veq / 1000;
+                        const n_ClO = n_ClO_initial - this.C_titrant * V / 1000;
+                        const n_Cl = this.C_titrant * V / 1000;
+                        const n_Na = n_ClO_initial;
+                        const V_total = (V0 + V) / 1000;
+                        
+                        const sigma = (this.lambda_ClO * n_ClO + this.lambda_Cl * n_Cl + this.lambda_Na * n_Na) / V_total;
+                        return sigma;
+                    },
+                    // Après équivalence: H3O+ et Cl- augmentent, Na+ constant
+                    calcAfter: function(V, V0, Veq) {
+                        const n_ClO_initial = this.C_titrant * Veq / 1000;
+                        const n_H3O = this.C_titrant * (V - Veq) / 1000;
+                        const n_Cl = this.C_titrant * V / 1000;
+                        const n_Na = n_ClO_initial;
+                        const V_total = (V0 + V) / 1000;
+                        
+                        const sigma = (this.lambda_H3O * n_H3O + this.lambda_Cl * n_Cl + this.lambda_Na * n_Na) / V_total;
+                        return sigma;
+                    }
+                },
+                answers: {
+                    ions_avant: ["na+", "clo-", "cl-", "na", "clo", "cl"],
+                    clo_avant: ["↘", "diminue", "baisse"],
+                    h3o_avant: ["≈0", "0", "≈ 0"],
+                    na_avant: ["=", "constante", "constant"],
+                    cl_avant: ["↗", "augmente", "monte"],
+                    ions_apres: ["na+", "h3o+", "cl-", "na", "h3o", "cl"],
+                    clo_apres: ["≈0", "0", "≈ 0"],
+                    h3o_apres: ["↗", "augmente", "monte"],
+                    na_apres: ["=", "constante", "constant"],
+                    cl_apres: ["↗", "augmente", "monte"]
+                }
+            },
+            3: {
+                graph: {
+                    title: "σ (mS/cm)",
+                    xLabel: "Volume HNO₃ (mL)",
+                    yLabel: "Conductivité (mS/cm)",
+                    eq: 18,
+                    V0: 50,
+                    lambda_Na: 5.0,
+                    lambda_HO: 19.9,
+                    lambda_H3O: 35.0,
+                    lambda_NO3: 7.1,
+                    C_titrant: 0.1,
+                    // Avant équivalence: HO- disparaît, NO3- apparaît, Na+ constant
+                    calcBefore: function(V, V0, Veq) {
+                        const n_HO_initial = this.C_titrant * Veq / 1000;
+                        const n_HO = n_HO_initial - this.C_titrant * V / 1000;
+                        const n_NO3 = this.C_titrant * V / 1000;
+                        const n_Na = n_HO_initial;
+                        const V_total = (V0 + V) / 1000;
+                        
+                        const sigma = (this.lambda_HO * n_HO + this.lambda_NO3 * n_NO3 + this.lambda_Na * n_Na) / V_total;
+                        return sigma;
+                    },
+                    // Après équivalence: H3O+ et NO3- augmentent, Na+ constant
+                    calcAfter: function(V, V0, Veq) {
+                        const n_HO_initial = this.C_titrant * Veq / 1000;
+                        const n_H3O = this.C_titrant * (V - Veq) / 1000;
+                        const n_NO3 = this.C_titrant * V / 1000;
+                        const n_Na = n_HO_initial;
+                        const V_total = (V0 + V) / 1000;
+                        
+                        const sigma = (this.lambda_H3O * n_H3O + this.lambda_NO3 * n_NO3 + this.lambda_Na * n_Na) / V_total;
+                        return sigma;
+                    }
+                },
+                answers: {
+                    ions_avant: ["na+", "ho-", "no3-", "na", "ho", "no3"],
+                    ho_avant: ["↘", "diminue", "baisse"],
+                    h3o_avant: ["≈0", "0", "≈ 0"],
+                    na_avant: ["=", "constante", "constant"],
+                    no3_avant: ["↗", "augmente", "monte"],
+                    ions_apres: ["na+", "h3o+", "no3-", "na", "h3o", "no3"],
+                    ho_apres: ["≈0", "0", "≈ 0"],
+                    h3o_apres: ["↗", "augmente", "monte"],
+                    na_apres: ["=", "constante", "constant"],
+                    no3_apres: ["↗", "augmente", "monte"]
+                }
+            },
+            4: {
+                graph: {
+                    title: "σ (mS/cm)",
+                    xLabel: "Volume KOH (mL)",
+                    yLabel: "Conductivité (mS/cm)",
+                    eq: 20,
+                    V0: 50,
+                    lambda_K: 7.4,
+                    lambda_HO: 19.9,
+                    lambda_H3O: 35.0,
+                    lambda_Cl: 7.6,
+                    C_titrant: 0.1,
+                    // Avant équivalence: H3O+ disparaît, K+ apparaît, Cl- constant
+                    calcBefore: function(V, V0, Veq) {
+                        const n_H3O_initial = this.C_titrant * Veq / 1000;
+                        const n_H3O = n_H3O_initial - this.C_titrant * V / 1000;
+                        const n_K = this.C_titrant * V / 1000;
+                        const n_Cl = n_H3O_initial;
+                        const V_total = (V0 + V) / 1000;
+                        
+                        const sigma = (this.lambda_H3O * n_H3O + this.lambda_K * n_K + this.lambda_Cl * n_Cl) / V_total;
+                        return sigma;
+                    },
+                    // Après équivalence: HO- et K+ augmentent, Cl- constant
+                    calcAfter: function(V, V0, Veq) {
+                        const n_H3O_initial = this.C_titrant * Veq / 1000;
+                        const n_HO = this.C_titrant * (V - Veq) / 1000;
+                        const n_K = this.C_titrant * V / 1000;
+                        const n_Cl = n_H3O_initial;
+                        const V_total = (V0 + V) / 1000;
+                        
+                        const sigma = (this.lambda_HO * n_HO + this.lambda_K * n_K + this.lambda_Cl * n_Cl) / V_total;
+                        return sigma;
+                    }
+                },
+                answers: {
+                    ions_avant: ["h3o+", "cl-", "k+", "h3o", "cl", "k"],
+                    h3o_avant: ["↘", "diminue", "baisse"],
+                    ho_avant: ["≈0", "0", "≈ 0"],
+                    cl_avant: ["=", "constante", "constant"],
+                    k_avant: ["↗", "augmente", "monte"],
+                    ions_apres: ["ho-", "cl-", "k+", "ho", "cl", "k"],
+                    h3o_apres: ["≈0", "0", "≈ 0"],
+                    ho_apres: ["↗", "augmente", "monte"],
+                    cl_apres: ["=", "constante", "constant"],
+                    k_apres: ["↗", "augmente", "monte"]
+                }
+            },
+            5: {
+                graph: {
+                    title: "σ (mS/cm)",
+                    xLabel: "Volume NaOH (mL)",
+                    yLabel: "Conductivité (mS/cm)",
+                    eq: 16,
+                    V0: 50,
+                    lambda_Na: 5.0,
+                    lambda_HO: 19.9,
+                    lambda_NH4: 7.3,
+                    lambda_Cl: 7.6,
+                    C_titrant: 0.1,
+                    // Avant équivalence: NH4+ disparaît, Na+ apparaît, Cl- constant
+                    calcBefore: function(V, V0, Veq) {
+                        const n_NH4_initial = this.C_titrant * Veq / 1000;
+                        const n_NH4 = n_NH4_initial - this.C_titrant * V / 1000;
+                        const n_Na = this.C_titrant * V / 1000;
+                        const n_Cl = n_NH4_initial;
+                        const V_total = (V0 + V) / 1000;
+                        
+                        const sigma = (this.lambda_NH4 * n_NH4 + this.lambda_Na * n_Na + this.lambda_Cl * n_Cl) / V_total;
+                        return sigma;
+                    },
+                    // Après équivalence: HO- et Na+ augmentent, Cl- constant
+                    calcAfter: function(V, V0, Veq) {
+                        const n_NH4_initial = this.C_titrant * Veq / 1000;
+                        const n_HO = this.C_titrant * (V - Veq) / 1000;
+                        const n_Na = this.C_titrant * V / 1000;
+                        const n_Cl = n_NH4_initial;
+                        const V_total = (V0 + V) / 1000;
+                        
+                        const sigma = (this.lambda_HO * n_HO + this.lambda_Na * n_Na + this.lambda_Cl * n_Cl) / V_total;
+                        return sigma;
+                    }
+                },
+                answers: {
+                    ions_avant: ["nh4+", "cl-", "na+", "nh4", "cl", "na"],
+                    nh4_avant: ["↘", "diminue", "baisse"],
+                    ho_avant: ["≈0", "0", "≈ 0"],
+                    cl_avant: ["=", "constante", "constant"],
+                    na_avant: ["↗", "augmente", "monte"],
+                    ions_apres: ["ho-", "cl-", "na+", "ho", "cl", "na"],
+                    nh4_apres: ["≈0", "0", "≈ 0"],
+                    ho_apres: ["↗", "augmente", "monte"],
+                    cl_apres: ["=", "constante", "constant"],
+                    na_apres: ["↗", "augmente", "monte"]
+                }
+            }
+        };
+        
+        // Dessiner les graphiques selon la loi de Kohlrausch
+        function drawGraph(exNum) {
+            const config = exercises[exNum].graph;
+            const canvas = document.getElementById(`graph${exNum}`);
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Configuration
+            const padding = 60;
+            const graphWidth = canvas.width - 2 * padding;
+            const graphHeight = canvas.height - 2 * padding;
+            
+            // Calculer les conductivités selon Kohlrausch
+            const Veq = config.eq;
+            const V0 = config.V0; // Volume initial
+            const maxV = Veq * 1.5;
+            
+            // Calculer les conductivités
+            const conductivities = [];
+            for (let V = 0; V <= maxV; V += 0.5) {
+                let sigma;
+                if (V < Veq) {
+                    // Avant l'équivalence
+                    sigma = config.calcBefore(V, V0, Veq);
+                } else {
+                    // Après l'équivalence
+                    sigma = config.calcAfter(V, V0, Veq);
+                }
+                conductivities.push({ V, sigma });
+            }
+            
+            // Trouver min et max pour l'échelle
+            const minSigma = Math.min(...conductivities.map(c => c.sigma));
+            const maxSigma = Math.max(...conductivities.map(c => c.sigma));
+            const rangeSigma = maxSigma - minSigma;
+            
+            // Axes
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, canvas.height - padding);
+            ctx.lineTo(canvas.width - padding, canvas.height - padding);
+            ctx.stroke();
+            
+            // Labels
+            ctx.fillStyle = '#1e293b';
+            ctx.font = 'bold 14px Crimson Pro';
+            ctx.textAlign = 'center';
+            ctx.fillText(config.xLabel, canvas.width / 2, canvas.height - 20);
+            
+            ctx.save();
+            ctx.translate(20, canvas.height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText(config.yLabel, 0, 0);
+            ctx.restore();
+            
+            // Échelle X
+            for (let i = 0; i <= maxV; i += 5) {
+                const x = padding + (i / maxV) * graphWidth;
+                ctx.strokeStyle = '#e2e8f0';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(x, padding);
+                ctx.lineTo(x, canvas.height - padding);
+                ctx.stroke();
+                
+                ctx.fillStyle = '#64748b';
+                ctx.font = '12px JetBrains Mono';
+                ctx.textAlign = 'center';
+                ctx.fillText(i.toString(), x, canvas.height - padding + 20);
+            }
+            
+            // Échelle Y
+            const stepY = Math.ceil(rangeSigma / 6);
+            for (let i = Math.floor(minSigma); i <= Math.ceil(maxSigma); i += stepY) {
+                const y = canvas.height - padding - ((i - minSigma) / rangeSigma) * graphHeight;
+                ctx.strokeStyle = '#e2e8f0';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(canvas.width - padding, y);
+                ctx.stroke();
+                
+                ctx.fillStyle = '#64748b';
+                ctx.font = '12px JetBrains Mono';
+                ctx.textAlign = 'right';
+                ctx.fillText(i.toFixed(0), padding - 10, y + 4);
+            }
+            
+            // Tracer la courbe
+            ctx.strokeStyle = '#d97706';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            conductivities.forEach((point, index) => {
+                const x = padding + (point.V / maxV) * graphWidth;
+                const y = canvas.height - padding - ((point.sigma - minSigma) / rangeSigma) * graphHeight;
+                
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            
+            ctx.stroke();
+            
+            // Point d'équivalence
+            const eqPoint = conductivities.find(p => p.V >= Veq);
+            if (eqPoint) {
+                const eqX = padding + (eqPoint.V / maxV) * graphWidth;
+                const eqY = canvas.height - padding - ((eqPoint.sigma - minSigma) / rangeSigma) * graphHeight;
+                
+                ctx.fillStyle = '#dc2626';
+                ctx.beginPath();
+                ctx.arc(eqX, eqY, 6, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // Ligne verticale à l'équivalence
+                ctx.strokeStyle = '#dc2626';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(eqX, padding);
+                ctx.lineTo(eqX, canvas.height - padding);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                // Label équivalence
+                ctx.fillStyle = '#dc2626';
+                ctx.font = 'bold 13px Crimson Pro';
+                ctx.textAlign = 'center';
+                ctx.fillText(`Véq = ${Veq} mL`, eqX, padding - 10);
+            }
+        }
+        
+        // Initialiser tous les graphiques
+        for (let i = 1; i <= 5; i++) {
+            drawGraph(i);
+        }
+        
+        // Changer d'exercice
+        function showExercise(num) {
+            // Désactiver tous les boutons et contenus
+            document.querySelectorAll('.exercise-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.exercise-content').forEach(content => content.classList.remove('active'));
+            
+            // Activer le bon
+            document.querySelectorAll('.exercise-btn')[num - 1].classList.add('active');
+            document.getElementById(`exercise${num}`).classList.add('active');
+            
+            // Scroll vers le haut
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Normaliser une réponse pour la comparaison
+        function normalizeAnswer(answer) {
+            return answer.toLowerCase()
+                .trim()
+                .replace(/\s+/g, '')
+                .replace(/[⁺⁻₊₋+\-]/g, '')
+                .replace(/,/g, '');
+        }
+        
+        // Vérifier un exercice
+        function checkExercise(num) {
+            const config = exercises[num];
+            let score = 0;
+            let total = 0;
+            
+            // Vérifier chaque champ
+            for (const [field, correctAnswers] of Object.entries(config.answers)) {
+                const input = document.getElementById(`ex${num}_${field}`);
+                if (input) {
+                    total++;
+                    const userAnswer = normalizeAnswer(input.value);
+                    const isCorrect = correctAnswers.some(correct => 
+                        normalizeAnswer(correct) === userAnswer ||
+                        userAnswer.includes(normalizeAnswer(correct)) ||
+                        normalizeAnswer(correct).includes(userAnswer)
+                    );
+                    
+                    if (isCorrect) {
+                        input.classList.remove('incorrect');
+                        input.classList.add('correct');
+                        score++;
+                    } else {
+                        input.classList.remove('correct');
+                        input.classList.add('incorrect');
+                    }
+                }
+            }
+            
+            // Afficher le score
+            const scoreDiv = document.getElementById(`score${num}`);
+            const percentage = Math.round((score / total) * 100);
+            scoreDiv.textContent = `Score : ${score}/${total} (${percentage}%)`;
+            scoreDiv.style.display = 'block';
+            
+            // Scroll vers le score
+            scoreDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        // Afficher la correction
+        function showCorrection(num) {
+            const correction = document.getElementById(`correction${num}`);
+            correction.classList.add('show');
+            correction.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        // Réinitialiser un exercice
+        function resetExercise(num) {
+            // Réinitialiser tous les champs
+            document.querySelectorAll(`#exercise${num} input[type="text"], #exercise${num} textarea`).forEach(input => {
+                input.value = '';
+                input.classList.remove('correct', 'incorrect');
+            });
+            
+            // Cacher le score et la correction
+            document.getElementById(`score${num}`).style.display = 'none';
+            document.getElementById(`correction${num}`).classList.remove('show');
+            
+            // Scroll vers le haut de l'exercice
+            document.getElementById(`exercise${num}`).scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
